@@ -16,28 +16,20 @@
 
   <style>
     .map-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1em;
+    }
+    .continent-img {
       position: relative;
-      width: 100%;
-      max-width: 1000px;
-      margin: auto;
-    }
-    .map-background {
-      width: 100%;
+      width: 250px;
       height: auto;
-      display: block;
-    }
-    .overlay-svg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-    .continent {
       cursor: pointer;
-      fill: transparent;
-      pointer-events: all;
+      transition: transform 0.2s ease;
+    }
+    .continent-img:hover {
+      transform: scale(1.05);
     }
     .lang-img {
       width: 200px;
@@ -56,34 +48,16 @@
       <p>Click anywhere to start exploring the world's languages.</p>
     </section>
 
-    <!-- Slide 2: JPEG map + SVG clickable overlays -->
+    <!-- Slide 2: Individual clickable continent PNGs -->
     <section>
       <h2>World Continents</h2>
       <div class="map-container">
-        <!-- Background map image -->
-        <img src="https://github.com/anfelaras/languesdumonde/blob/main/continents.jpg" alt="World Map" class="map-background">
-
-        <!-- Transparent SVG overlays aligned with the map -->
-        <svg class="overlay-svg" viewBox="0 0 1000 500">
-          <a xlink:href="#/continent-europe">
-            <path class="continent" data-tippy-content="Europe" d="M520,140 L550,150 L560,170 L530,180 L510,160 Z" />
-          </a>
-          <a xlink:href="#/continent-africa">
-            <path class="continent" data-tippy-content="Africa" d="M510,190 L540,220 L530,270 L500,280 L480,240 Z" />
-          </a>
-          <a xlink:href="#/continent-asia">
-            <path class="continent" data-tippy-content="Asia" d="M600,120 L650,130 L660,180 L630,200 L590,160 Z" />
-          </a>
-          <a xlink:href="#/continent-namerica">
-            <path class="continent" data-tippy-content="North America" d="M180,100 L230,120 L240,160 L190,150 Z" />
-          </a>
-          <a xlink:href="#/continent-samerica">
-            <path class="continent" data-tippy-content="South America" d="M260,200 L280,240 L270,290 L250,280 Z" />
-          </a>
-          <a xlink:href="#/continent-oceania">
-            <path class="continent" data-tippy-content="Oceania" d="M800,320 L830,330 L840,360 L810,370 Z" />
-          </a>
-        </svg>
+        <a href="#/continent-europe"><img src="https://github.com/anfelaras/languesdumonde/blob/main/europe.png" alt="Europe" class="continent-img" data-tippy-content="Europe"></a>
+        <a href="#/continent-africa"><img src="https://github.com/anfelaras/languesdumonde/blob/main/africa.png" alt="Afrique" class="continent-img" data-tippy-content="Africa"></a>
+        <a href="#/continent-asia"><img src="https://github.com/anfelaras/languesdumonde/blob/main/asia.png" alt="Asie" class="continent-img" data-tippy-content="Asia"></a>
+        <a href="#/continent-namerica"><img src="https://github.com/anfelaras/languesdumonde/blob/main/north_america.png" alt="Amérique du Nord" class="continent-img" data-tippy-content="North America"></a>
+        <a href="#/continent-samerica"><img src="https://github.com/anfelaras/languesdumonde/blob/main/south_america.png" alt="Amérique du Sud" class="continent-img" data-tippy-content="South America"></a>
+        <a href="#/continent-oceania"><img src="https://github.com/anfelaras/languesdumonde/blob/main/oceania.png" alt="Océanie" class="continent-img" data-tippy-content="Oceania"></a>
       </div>
     </section>
 
@@ -127,7 +101,7 @@
   Reveal.initialize();
 </script>
 
-<!-- Initialize Tippy.js tooltips on elements with class 'tooltip' and SVG elements -->
+<!-- Initialize Tippy.js tooltips on elements with data-tippy-content -->
 <script>
   tippy('[data-tippy-content]');
 </script>
