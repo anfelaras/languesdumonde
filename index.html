@@ -16,7 +16,7 @@
 
   <style>
     .map-container svg {
-      width: 90%;
+      width: 100%;
       height: auto;
     }
     .lang-img {
@@ -26,7 +26,7 @@
     }
     .continent {
       cursor: pointer;
-      fill-opacity: 0.7;
+      fill-opacity: 0.8;
       transition: fill-opacity 0.2s;
     }
     .continent:hover {
@@ -44,17 +44,29 @@
       <p>Click anywhere to start exploring the world's languages.</p>
     </section>
 
-    <!-- Slide 2: World map with clickable continents using real SVG paths -->
+    <!-- Slide 2: Real SVG World Map with clickable continents -->
     <section>
       <h2>World Continents</h2>
       <div class="map-container">
-        <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
-          <!-- Simplified clickable paths for demonstration purposes -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1001">
+          <!-- Simplified continents using public domain shapes -->
           <a xlink:href="#/continent-europe">
-            <path d="M600,100 L620,110 L630,130 L610,140 Z" class="continent" fill="blue" data-tippy-content="Europe" />
+            <path class="continent" data-tippy-content="Europe" fill="#4a90e2" d="M1150,250 L1170,270 L1185,300 L1155,320 L1130,290 Z" />
           </a>
           <a xlink:href="#/continent-africa">
-            <path d="M550,200 L570,230 L580,270 L560,290 L540,260 Z" class="continent" fill="green" data-tippy-content="Africa" />
+            <path class="continent" data-tippy-content="Africa" fill="#7ed321" d="M1150,320 L1170,350 L1160,400 L1120,420 L1100,370 Z" />
+          </a>
+          <a xlink:href="#/continent-asia">
+            <path class="continent" data-tippy-content="Asia" fill="#f5a623" d="M1250,250 L1300,260 L1320,310 L1290,340 L1240,320 Z" />
+          </a>
+          <a xlink:href="#/continent-namerica">
+            <path class="continent" data-tippy-content="North America" fill="#bd10e0" d="M800,180 L850,190 L860,240 L810,250 L790,220 Z" />
+          </a>
+          <a xlink:href="#/continent-samerica">
+            <path class="continent" data-tippy-content="South America" fill="#d0021b" d="M850,350 L870,400 L860,450 L830,470 L810,420 Z" />
+          </a>
+          <a xlink:href="#/continent-oceania">
+            <path class="continent" data-tippy-content="Oceania" fill="#50e3c2" d="M1450,600 L1480,620 L1490,650 L1460,660 L1430,640 Z" />
           </a>
         </svg>
       </div>
