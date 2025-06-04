@@ -15,22 +15,34 @@
   <script src="https://unpkg.com/tippy.js@6"></script>
 
   <style>
-    .map-container svg {
+    .map-container {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .map-background {
       width: 100%;
       height: auto;
+      display: block;
+    }
+    .overlay-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .continent {
+      cursor: pointer;
+      fill: transparent;
+      pointer-events: all;
     }
     .lang-img {
       width: 200px;
       display: block;
       margin-bottom: 1em;
-    }
-    .continent {
-      cursor: pointer;
-      fill-opacity: 0.8;
-      transition: fill-opacity 0.2s;
-    }
-    .continent:hover {
-      fill-opacity: 1;
     }
   </style>
 </head>
@@ -44,29 +56,32 @@
       <p>Click anywhere to start exploring the world's languages.</p>
     </section>
 
-    <!-- Slide 2: Real SVG World Map with clickable continents -->
+    <!-- Slide 2: JPEG map + SVG clickable overlays -->
     <section>
       <h2>World Continents</h2>
       <div class="map-container">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1001">
-          <!-- Simplified continents using public domain shapes -->
+        <!-- Background map image -->
+        <img src="continents.jpg" alt="World Map" class="map-background">
+
+        <!-- Transparent SVG overlays aligned with the map -->
+        <svg class="overlay-svg" viewBox="0 0 1000 500">
           <a xlink:href="#/continent-europe">
-            <path class="continent" data-tippy-content="Europe" fill="#4a90e2" d="M1150,250 L1170,270 L1185,300 L1155,320 L1130,290 Z" />
+            <path class="continent" data-tippy-content="Europe" d="M520,140 L550,150 L560,170 L530,180 L510,160 Z" />
           </a>
           <a xlink:href="#/continent-africa">
-            <path class="continent" data-tippy-content="Africa" fill="#7ed321" d="M1150,320 L1170,350 L1160,400 L1120,420 L1100,370 Z" />
+            <path class="continent" data-tippy-content="Africa" d="M510,190 L540,220 L530,270 L500,280 L480,240 Z" />
           </a>
           <a xlink:href="#/continent-asia">
-            <path class="continent" data-tippy-content="Asia" fill="#f5a623" d="M1250,250 L1300,260 L1320,310 L1290,340 L1240,320 Z" />
+            <path class="continent" data-tippy-content="Asia" d="M600,120 L650,130 L660,180 L630,200 L590,160 Z" />
           </a>
           <a xlink:href="#/continent-namerica">
-            <path class="continent" data-tippy-content="North America" fill="#bd10e0" d="M800,180 L850,190 L860,240 L810,250 L790,220 Z" />
+            <path class="continent" data-tippy-content="North America" d="M180,100 L230,120 L240,160 L190,150 Z" />
           </a>
           <a xlink:href="#/continent-samerica">
-            <path class="continent" data-tippy-content="South America" fill="#d0021b" d="M850,350 L870,400 L860,450 L830,470 L810,420 Z" />
+            <path class="continent" data-tippy-content="South America" d="M260,200 L280,240 L270,290 L250,280 Z" />
           </a>
           <a xlink:href="#/continent-oceania">
-            <path class="continent" data-tippy-content="Oceania" fill="#50e3c2" d="M1450,600 L1480,620 L1490,650 L1460,660 L1430,640 Z" />
+            <path class="continent" data-tippy-content="Oceania" d="M800,320 L830,330 L840,360 L810,370 Z" />
           </a>
         </svg>
       </div>
