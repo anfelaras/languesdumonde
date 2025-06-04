@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Interactive Language Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Reveal.js core styles and theme -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js/dist/theme/white.css">
+
+  <!-- Tippy.js for hover tooltips -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+
+  <style>
+    /* Resize the SVG map to be responsive */
+    .map-container svg {
+      width: 80%;
+      height: auto;
+    }
+
+    /* Style for language flag images */
+    .lang-img {
+      width: 200px;
+      display: block;
+      margin-bottom: 1em;
+    }
+  </style>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- Slide 1: Welcome screen -->
+    <section>
+      <h2>Welcome!</h2>
+      <p>Click anywhere to start exploring the world's languages.</p>
+    </section>
+
+    <!-- Slide 2: World map with clickable continents -->
+    <section>
+      <h2>World Continents</h2>
+      <div class="map-container">
+        <!-- Simple placeholder SVG map with clickable continents -->
+        <svg viewBox="0 0 1000 500">
+          <!-- Link to Europe slide -->
+          <a href="#/continent-europe">
+            <circle cx="600" cy="150" r="40" fill="blue" class="tooltip" data-tippy-content="Europe"></circle>
+          </a>
+          <!-- Link to Africa slide -->
+          <a href="#/continent-africa">
+            <circle cx="550" cy="250" r="50" fill="green" class="tooltip" data-tippy-content="Africa"></circle>
+          </a>
+        </svg>
+      </div>
+    </section>
+
+    <!-- Slide 3: Europe with language links -->
+    <section id="continent-europe">
+      <h2>Europe</h2>
+      <ul>
+        <!-- French language link with hover tooltip -->
+        <li><a href="#/language-french" class="tooltip" data-tippy-content="Spoken in France, Belgium, Switzerland">French</a></li>
+        <!-- German language link with hover tooltip -->
+        <li><a href="#/language-german" class="tooltip" data-tippy-content="Spoken in Germany, Austria, Switzerland">German</a></li>
+      </ul>
+    </section>
+
+    <!-- Slide 4: Africa with language links -->
+    <section id="continent-africa">
+      <h2>Africa</h2>
+      <ul>
+        <!-- Swahili language link -->
+        <li><a href="#/language-swahili" class="tooltip" data-tippy-content="Spoken in East Africa">Swahili</a></li>
+        <!-- Arabic language link -->
+        <li><a href="#/language-arabic" class="tooltip" data-tippy-content="Spoken in North Africa">Arabic</a></li>
+      </ul>
+    </section>
+
+    <!-- Slide 5: French language detail page -->
+    <section id="language-french">
+      <h2>French</h2>
+      <!-- Flag image -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="French Flag" class="lang-img">
+      <!-- Description text -->
+      <p>French is a Romance language spoken in France and many parts of the world.</p>
+      <!-- Audio player for sample -->
+      <audio controls>
+        <source src="french_audio.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+      <br>
+      <!-- Back link to Europe slide -->
+      <a href="#/continent-europe">← Back to Europe</a>
+    </section>
+
+    <!-- More language slides can be added in the same format -->
+
+  </div>
+</div>
+
+<!-- Reveal.js script to initialize slideshow functionality -->
+<script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.min.js"></script>
+<script>
+  Reveal.initialize();
+</script>
+
+<!-- Initialize Tippy.js tooltips on elements with class 'tooltip' -->
+<script>
+  tippy('.tooltip');
+</script>
+</body>
+</html>
