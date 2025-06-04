@@ -15,17 +15,22 @@
   <script src="https://unpkg.com/tippy.js@6"></script>
 
   <style>
-    /* Resize the SVG map to be responsive */
     .map-container svg {
-      width: 80%;
+      width: 90%;
       height: auto;
     }
-
-    /* Style for language flag images */
     .lang-img {
       width: 200px;
       display: block;
       margin-bottom: 1em;
+    }
+    .continent {
+      cursor: pointer;
+      fill-opacity: 0.7;
+      transition: fill-opacity 0.2s;
+    }
+    .continent:hover {
+      fill-opacity: 1;
     }
   </style>
 </head>
@@ -39,19 +44,17 @@
       <p>Click anywhere to start exploring the world's languages.</p>
     </section>
 
-    <!-- Slide 2: World map with clickable continents -->
+    <!-- Slide 2: World map with clickable continents using real SVG paths -->
     <section>
       <h2>World Continents</h2>
       <div class="map-container">
-        <!-- Simple placeholder SVG map with clickable continents -->
-        <svg viewBox="0 0 1000 500">
-          <!-- Link to Europe slide -->
-          <a href="#/continent-europe">
-            <circle cx="600" cy="150" r="40" fill="blue" class="tooltip" data-tippy-content="Europe"></circle>
+        <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+          <!-- Simplified clickable paths for demonstration purposes -->
+          <a xlink:href="#/continent-europe">
+            <path d="M600,100 L620,110 L630,130 L610,140 Z" class="continent" fill="blue" data-tippy-content="Europe" />
           </a>
-          <!-- Link to Africa slide -->
-          <a href="#/continent-africa">
-            <circle cx="550" cy="250" r="50" fill="green" class="tooltip" data-tippy-content="Africa"></circle>
+          <a xlink:href="#/continent-africa">
+            <path d="M550,200 L570,230 L580,270 L560,290 L540,260 Z" class="continent" fill="green" data-tippy-content="Africa" />
           </a>
         </svg>
       </div>
@@ -61,9 +64,7 @@
     <section id="continent-europe">
       <h2>Europe</h2>
       <ul>
-        <!-- French language link with hover tooltip -->
         <li><a href="#/language-french" class="tooltip" data-tippy-content="Spoken in France, Belgium, Switzerland">French</a></li>
-        <!-- German language link with hover tooltip -->
         <li><a href="#/language-german" class="tooltip" data-tippy-content="Spoken in Germany, Austria, Switzerland">German</a></li>
       </ul>
     </section>
@@ -72,9 +73,7 @@
     <section id="continent-africa">
       <h2>Africa</h2>
       <ul>
-        <!-- Swahili language link -->
         <li><a href="#/language-swahili" class="tooltip" data-tippy-content="Spoken in East Africa">Swahili</a></li>
-        <!-- Arabic language link -->
         <li><a href="#/language-arabic" class="tooltip" data-tippy-content="Spoken in North Africa">Arabic</a></li>
       </ul>
     </section>
@@ -82,21 +81,15 @@
     <!-- Slide 5: French language detail page -->
     <section id="language-french">
       <h2>French</h2>
-      <!-- Flag image -->
       <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="French Flag" class="lang-img">
-      <!-- Description text -->
       <p>French is a Romance language spoken in France and many parts of the world.</p>
-      <!-- Audio player for sample -->
       <audio controls>
         <source src="french_audio.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
       <br>
-      <!-- Back link to Europe slide -->
       <a href="#/continent-europe">← Back to Europe</a>
     </section>
-
-    <!-- More language slides can be added in the same format -->
 
   </div>
 </div>
@@ -107,9 +100,9 @@
   Reveal.initialize();
 </script>
 
-<!-- Initialize Tippy.js tooltips on elements with class 'tooltip' -->
+<!-- Initialize Tippy.js tooltips on elements with class 'tooltip' and SVG elements -->
 <script>
-  tippy('.tooltip');
+  tippy('[data-tippy-content]');
 </script>
 </body>
 </html>
