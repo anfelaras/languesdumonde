@@ -14,27 +14,416 @@
   <script src="https://unpkg.com/@popperjs/core@2"></script>
   <script src="https://unpkg.com/tippy.js@6"></script>
 
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
-    .map-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1em;
+    * {
+      box-sizing: border-box;
     }
-    .continent-img {
-      position: relative;
-      width: 250px;
-      height: auto;
+    
+    .reveal {
+      font-family: 'Inter', sans-serif;
+      background: white;
+      overflow: hidden;
+    }
+    
+    .reveal .slides {
+      height: 100vh;
+      overflow: hidden;
+    }
+    
+    .reveal .slides section {
+      background: transparent;
+      padding: 1.5rem;
+      margin: 0;
+      height: 100vh;
+      width: 100%;
+      max-width: 100vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    
+    /* Language detail pages get special overflow treatment */
+    .reveal .slides section.language-detail {
+      overflow-y: auto;
+    }
+    
+    /* Welcome slide styling */
+    .welcome-slide {
+      text-align: center;
       cursor: pointer;
       transition: transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
     }
-    .continent-img:hover {
-      transform: scale(1.05);
+    
+    .welcome-slide:hover {
+      transform: translateY(-2px);
     }
-    .lang-img {
-      width: 200px;
+    
+    .welcome-slide h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: #1e293b;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .welcome-slide p {
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: #64748b;
+      margin: 1rem 0;
+    }
+    
+    .welcome-slide em {
+      display: inline-block;
+      padding: 12px 24px;
+      background: #3b82f6;
+      color: white;
+      border-radius: 8px;
+      font-style: normal;
+      font-weight: 500;
+      margin-top: 1rem;
+    }
+
+    /* World map slide */
+    .world-map-slide {
+      padding: 1rem;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    
+    .world-map-slide h2 {
+      text-align: center;
+      font-size: clamp(1.2rem, 3.5vw, 2rem);
+      margin-bottom: 1rem;
+      color: #1e293b;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    
+    .map-container {
+      width: 100%;
+      max-width: min(900px, calc(100vw - 3rem));
+      height: calc(100vh - 120px);
+      max-height: 500px;
+      margin: 0 auto;
+      position: relative;
+      background: #f0f9ff;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      flex-shrink: 0;
+    }
+    
+    .continent {
+      position: absolute;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: white;
+      font-size: clamp(10px, 1.5vw, 14px);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .continent:hover {
+      transform: scale(1.08);
+      z-index: 10;
+      filter: brightness(1.1) saturate(1.2);
+    }
+    
+    .continent a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+      text-align: center;
+      background: transparent;
+    }
+    
+    .continent a:hover {
+      background: transparent;
+    }
+    
+    /* Continent positioning with actual continent images */
+    .north-america {
+      width: 22%;
+      height: 30%;
+      top: 12%;
+      left: 8%;
+      background: url('./north-america.jpg') no-repeat center/contain;
+      filter: hue-rotate(0deg) saturate(1.2) brightness(1.1);
+    }
+    
+    .south-america {
+      width: 14%;
+      height: 35%;
+      top: 35%;
+      left: 16%;
+      background: url('./south-america.jpg') no-repeat center/contain;
+      filter: hue-rotate(60deg) saturate(1.2) brightness(1.1);
+    }
+    
+    .europe {
+      width: 16%;
+      height: 20%;
+      top: 18%;
+      left: 42%;
+      background: url('./europe.jpg') no-repeat center/contain;
+      filter: hue-rotate(260deg) saturate(1.2) brightness(1.1);
+    }
+    
+    .africa {
+      width: 18%;
+      height: 32%;
+      top: 32%;
+      left: 40%;
+      background: url('./africa.jpg') no-repeat center/contain;
+      filter: hue-rotate(30deg) saturate(1.2) brightness(1.1);
+    }
+    
+    .asia {
+      width: 32%;
+      height: 28%;
+      top: 12%;
+      left: 58%;
+      background: url('./asia.jpg') no-repeat center/contain;
+      filter: hue-rotate(220deg) saturate(1.2) brightness(1.1);
+    }
+    
+    .oceania {
+      width: 14%;
+      height: 14%;
+      top: 58%;
+      left: 73%;
+      background: url('./oceania.jpg') no-repeat center/contain;
+      filter: hue-rotate(180deg) saturate(1.2) brightness(1.1);
+    }
+    
+    /* Continent pages styling */
+    .continent-page {
+      text-align: center;
+      height: 100vh;
+      padding: 1rem;
+      box-sizing: border-box;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .continent-page h2 {
+      font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      margin-bottom: 1rem;
+      color: #1e293b;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    
+    .language-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(200px, calc(50% - 0.5rem)), 1fr));
+      gap: 1rem;
+      margin: 0;
+      list-style: none;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      flex: 1;
+      align-content: start;
+      max-height: calc(100vh - 180px);
+      overflow-y: auto;
+    }
+    
+    .language-card {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 1.2rem;
+      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+      height: auto;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .language-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      background: white;
+    }
+    
+    .language-card a {
+      color: #1e293b;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      text-align: center;
+    }
+    
+    .language-card::before {
+      content: '🗣️';
+      font-size: 1.5rem;
       display: block;
-      margin-bottom: 1em;
+      margin-bottom: 0.5rem;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin: 1rem auto 0.5rem auto;
+      padding: 10px 20px;
+      background: #3b82f6;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    
+    .back-link:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
+    }
+    
+    /* Language detail pages */
+    .language-detail {
+      max-width: min(800px, calc(100vw - 3rem));
+      margin: 0 auto;
+      text-align: left;
+      height: auto;
+      min-height: 100vh;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      box-sizing: border-box;
+    }
+    
+    .language-detail h2 {
+      text-align: center;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 2rem;
+      color: #1e293b;
+      font-weight: 700;
+    }
+    
+    .flag-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    
+    .flag {
+      width: 120px;
+      height: 72px;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .language-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2.5rem 0;
+    }
+    
+    .info-card {
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: 12px;
+      border-left: 4px solid #3b82f6;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .info-card strong {
+      color: #1e293b;
+      font-weight: 700;
+    }
+    
+    .pronunciation {
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+      border-left: 4px solid #f59e0b;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .pronunciation strong {
+      color: #92400e;
+      font-weight: 700;
+    }
+    
+    .language-detail .back-link {
+      margin: 1rem auto 0.5rem auto;
+      align-self: center;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .reveal .slides section {
+        padding: 1rem;
+      }
+      
+      .map-container {
+        height: 50vh;
+      }
+      
+      .language-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+      
+      .language-info {
+        grid-template-columns: 1fr;
+      }
+      
+      .continent {
+        font-size: 10px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .reveal .slides section {
+        padding: 0.75rem;
+      }
+      
+      .map-container {
+        height: 45vh;
+      }
+      
+      .continent {
+        font-size: 8px;
+      }
+      
+      .language-card {
+        padding: 1rem;
+      }
     }
   </style>
 </head>
@@ -43,54 +432,194 @@
   <div class="slides">
 
     <!-- Slide 1: Welcome screen -->
-    <section>
-      <h2>Welcome!</h2>
-      <p>Click anywhere to start exploring the world's languages.</p>
+    <section class="welcome-slide">
+      <h1>🌍 Language Explorer</h1>
+      <p>Discover the beautiful diversity of world languages</p>
+      <p><em>Click anywhere to begin your journey</em></p>
     </section>
 
-    <!-- Slide 2: Individual clickable continent PNGs -->
-    <section>
-      <h2>World Continents</h2>
+    <!-- Slide 2: World map with continent shapes -->
+    <section class="world-map-slide">
+      <h2>Choose Your Continent</h2>
       <div class="map-container">
-        <a href="#/continent-europe"><img src="https://github.com/anfelaras/languesdumonde/blob/main/europe.jpg" alt="Europe" class="continent-img" data-tippy-content="Europe"></a>
-        <a href="#/continent-africa"><img src="https://github.com/anfelaras/languesdumonde/blob/main/africa.jpg" alt="Africa" class="continent-img" data-tippy-content="Africa"></a>
-        <a href="#/continent-asia"><img src="https://github.com/anfelaras/languesdumonde/blob/main/asia.jpg" alt="Asia" class="continent-img" data-tippy-content="Asia"></a>
-        <a href="#/continent-namerica"><img src="https://github.com/anfelaras/languesdumonde/blob/main/north_america.jpg" alt="North America" class="continent-img" data-tippy-content="North America"></a>
-        <a href="#/continent-samerica"><img src="https://github.com/anfelaras/languesdumonde/blob/main/south_america.jpg" alt="South America" class="continent-img" data-tippy-content="South America"></a>
-        <a href="#/continent-oceania"><img src="https://github.com/anfelaras/languesdumonde/blob/main/oceania.jpg" alt="Oceania" class="continent-img" data-tippy-content="Oceania"></a>
+        <div class="continent north-america" data-tippy-content="🍁 English, Spanish, French & Indigenous languages">
+          <a href="#/continent-namerica">North America</a>
+        </div>
+        <div class="continent south-america" data-tippy-content="🌴 Spanish, Portuguese & Indigenous languages">
+          <a href="#/continent-samerica">South America</a>
+        </div>
+        <div class="continent europe" data-tippy-content="🏰 Rich diversity: Romance, Germanic & Slavic languages">
+          <a href="#/continent-europe">Europe</a>
+        </div>
+        <div class="continent africa" data-tippy-content="🦁 Over 2,000 languages across diverse families">
+          <a href="#/continent-africa">Africa</a>
+        </div>
+        <div class="continent asia" data-tippy-content="🏮 Most populous languages including Mandarin & Hindi">
+          <a href="#/continent-asia">Asia</a>
+        </div>
+        <div class="continent oceania" data-tippy-content="🏄 English & diverse Indigenous Pacific languages">
+          <a href="#/continent-oceania">Oceania</a>
+        </div>
       </div>
     </section>
 
-
-    <!-- Slide 3: Europe with language links -->
-    <section id="continent-europe">
-      <h2>Europe</h2>
-      <ul>
-        <li><a href="#/language-french" class="tooltip" data-tippy-content="Spoken in France, Belgium, Switzerland">French</a></li>
-        <li><a href="#/language-german" class="tooltip" data-tippy-content="Spoken in Germany, Austria, Switzerland">German</a></li>
+    <!-- Continent Pages -->
+    <section id="continent-namerica" class="continent-page">
+      <h2>🍁 North America</h2>
+      <ul class="language-grid">
+        <li class="language-card"><a href="#/language-english" data-tippy-content="325+ million speakers">English</a></li>
+        <li class="language-card"><a href="#/language-spanish-na" data-tippy-content="60+ million speakers in US & Mexico">Spanish</a></li>
+        <li class="language-card"><a href="#/language-french-na" data-tippy-content="Quebec's official language">French (Canadian)</a></li>
+        <li class="language-card"><a href="#/language-navajo" data-tippy-content="Most spoken Indigenous language">Navajo</a></li>
       </ul>
+      <a href="#/1" class="back-link">← Back to World Map</a>
     </section>
 
-    <!-- Slide 4: Africa with language links -->
-    <section id="continent-africa">
-      <h2>Africa</h2>
-      <ul>
-        <li><a href="#/language-swahili" class="tooltip" data-tippy-content="Spoken in East Africa">Swahili</a></li>
-        <li><a href="#/language-arabic" class="tooltip" data-tippy-content="Spoken in North Africa">Arabic</a></li>
+    <section id="continent-samerica" class="continent-page">
+      <h2>🌴 South America</h2>
+      <ul class="language-grid">
+        <li class="language-card"><a href="#/language-spanish-sa" data-tippy-content="Over 200 million speakers">Spanish</a></li>
+        <li class="language-card"><a href="#/language-portuguese" data-tippy-content="Brazil's official language">Portuguese</a></li>
+        <li class="language-card"><a href="#/language-quechua" data-tippy-content="Language of the Inca Empire">Quechua</a></li>
+        <li class="language-card"><a href="#/language-guarani" data-tippy-content="Co-official in Paraguay">Guaraní</a></li>
       </ul>
+      <a href="#/1" class="back-link">← Back to World Map</a>
     </section>
 
-    <!-- Slide 5: French language detail page -->
-    <section id="language-french">
-      <h2>French</h2>
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Flag_of_France.svg" alt="French Flag" class="lang-img">
-      <p>French is a Romance language spoken in France and many parts of the world.</p>
-      <audio controls>
-        <source src="french_audio.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
-      <br>
-      <a href="#/continent-europe">← Back to Europe</a>
+    <section id="continent-europe" class="continent-page">
+      <h2>🏰 Europe</h2>
+      <ul class="language-grid">
+        <li class="language-card"><a href="#/language-french" data-tippy-content="Romance language with global reach">French</a></li>
+        <li class="language-card"><a href="#/language-german" data-tippy-content="Most spoken native language in EU">German</a></li>
+        <li class="language-card"><a href="#/language-italian" data-tippy-content="Language of art and culture">Italian</a></li>
+        <li class="language-card"><a href="#/language-russian" data-tippy-content="Largest Slavic language">Russian</a></li>
+      </ul>
+      <a href="#/1" class="back-link">← Back to World Map</a>
+    </section>
+
+    <section id="continent-africa" class="continent-page">
+      <h2>🦁 Africa</h2>
+      <ul class="language-grid">
+        <li class="language-card"><a href="#/language-swahili" data-tippy-content="East Africa's lingua franca">Swahili</a></li>
+        <li class="language-card"><a href="#/language-arabic" data-tippy-content="North Africa's dominant language">Arabic</a></li>
+        <li class="language-card"><a href="#/language-amharic" data-tippy-content="Ethiopia's working language">Amharic</a></li>
+        <li class="language-card"><a href="#/language-yoruba" data-tippy-content="West African cultural language">Yoruba</a></li>
+      </ul>
+      <a href="#/1" class="back-link">← Back to World Map</a>
+    </section>
+
+    <section id="continent-asia" class="continent-page">
+      <h2>🏮 Asia</h2>
+      <ul class="language-grid">
+        <li class="language-card"><a href="#/language-mandarin" data-tippy-content="World's most spoken language">Mandarin Chinese</a></li>
+        <li class="language-card"><a href="#/language-hindi" data-tippy-content="India's most spoken language">Hindi</a></li>
+        <li class="language-card"><a href="#/language-japanese" data-tippy-content="Unique writing system">Japanese</a></li>
+        <li class="language-card"><a href="#/language-korean" data-tippy-content="Hangul alphabet innovation">Korean</a></li>
+      </ul>
+      <a href="#/1" class="back-link">← Back to World Map</a>
+    </section>
+
+    <section id="continent-oceania" class="continent-page">
+      <h2>🏄 Oceania</h2>
+      <ul class="language-grid">
+        <li class="language-card"><a href="#/language-english-oc" data-tippy-content="Primary language of Australia & NZ">English</a></li>
+        <li class="language-card"><a href="#/language-maori" data-tippy-content="Indigenous language of New Zealand">Māori</a></li>
+        <li class="language-card"><a href="#/language-tok-pisin" data-tippy-content="Papua New Guinea's creole">Tok Pisin</a></li>
+        <li class="language-card"><a href="#/language-fijian" data-tippy-content="Official language of Fiji">Fijian</a></li>
+      </ul>
+      <a href="#/1" class="back-link">← Back to World Map</a>
+    </section>
+
+    <!-- Language Detail Pages -->
+    <section id="language-french" class="language-detail">
+      <h2>🇫🇷 French (Français)</h2>
+      <div class="flag-container">
+        <div class="flag" style="background: linear-gradient(to right, #002395 33%, #FFFFFF 33%, #FFFFFF 66%, #ED2939 66%);"></div>
+      </div>
+      <div class="language-info">
+        <div class="info-card">
+          <p><strong>Native Speakers:</strong> ~80 million</p>
+          <p><strong>Total Speakers:</strong> ~280 million worldwide</p>
+        </div>
+        <div class="info-card">
+          <p><strong>Language Family:</strong> Romance (from Latin)</p>
+          <p><strong>Writing System:</strong> Latin alphabet</p>
+        </div>
+        <div class="info-card">
+          <p><strong>Countries:</strong> France, Canada, Belgium, Switzerland, and 25+ African countries</p>
+        </div>
+        <div class="info-card">
+          <p><strong>Fun Fact:</strong> Official language of the Olympics and many international organizations</p>
+        </div>
+      </div>
+      <div class="pronunciation">
+        <p><strong>Hello:</strong> "Bonjour" <em>[bon-ZHOOR]</em></p>
+        <p><strong>Thank you:</strong> "Merci" <em>[mer-SEE]</em></p>
+        <p><strong>How are you?:</strong> "Comment allez-vous?" <em>[koh-mahn tah-lay VOO]</em></p>
+      </div>
+      <a href="#/continent-europe" class="back-link">← Back to Europe</a>
+    </section>
+
+    <section id="language-mandarin" class="language-detail">
+      <h2>🇨🇳 Mandarin Chinese (官话)</h2>
+      <div class="flag-container">
+        <div class="flag" style="background: #DE2910; position: relative;">
+          <div style="position: absolute; top: 12px; left: 12px; width: 20px; height: 13px; background: #FFDE00; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);"></div>
+        </div>
+      </div>
+      <div class="language-info">
+        <div class="info-card">
+          <p><strong>Native Speakers:</strong> ~918 million</p>
+          <p><strong>Total Speakers:</strong> ~1.1 billion worldwide</p>
+        </div>
+        <div class="info-card">
+          <p><strong>Language Family:</strong> Sino-Tibetan</p>
+          <p><strong>Writing System:</strong> Chinese characters (Hanzi)</p>
+        </div>
+        <div class="info-card">
+          <p><strong>Countries:</strong> China, Taiwan, Singapore</p>
+        </div>
+        <div class="info-card">
+          <p><strong>Fun Fact:</strong> Tonal language with 4 main tones that change word meanings</p>
+        </div>
+      </div>
+      <div class="pronunciation">
+        <p><strong>Hello:</strong> "你好" (Nǐ hǎo) <em>[nee-HAO]</em></p>
+        <p><strong>Thank you:</strong> "谢谢" (Xiè xiè) <em>[sheh-sheh]</em></p>
+        <p><strong>How are you?:</strong> "你好吗?" (Nǐ hǎo ma?) <em>[nee-HAO-mah]</em></p>
+      </div>
+      <a href="#/continent-asia" class="back-link">← Back to Asia</a>
+    </section>
+
+    <section id="language-swahili" class="language-detail">
+      <h2>🇰🇪 Swahili (Kiswahili)</h2>
+      <div class="flag-container">
+        <div class="flag" style="background: linear-gradient(to bottom, #000000 25%, #DC143C 25%, #DC143C 50%, #FFFFFF 50%, #FFFFFF 75%, #006600 75%); position: relative;">
+          <div style="position: absolute; top: 50%; left: 15px; transform: translateY(-50%); width: 0; height: 0; border-left: 15px solid #FFFFFF; border-top: 10px solid transparent; border-bottom: 10px solid transparent;"></div>
+        </div>
+      </div>
+      <div class="language-info">
+        <div class="info-card">
+          <p><strong>Native Speakers:</strong> ~20 million</p>
+          <p><strong>Total Speakers:</strong> ~200 million (including L2)</p>
+        </div>
+        <div class="info-card">
+          <p><strong>Language Family:</strong> Niger-Congo (Bantu)</p>
+          <p><strong>Writing System:</strong> Latin alphabet</p>
+        </div>
+        <div class="info-card">
+          <p><strong>Countries:</strong> Kenya, Tanzania, Uganda, Rwanda, Burundi, DRC</p>
+        </div>
+        <div class="info-card">
+          <p><strong>Fun Fact:</strong> Lingua franca of East Africa with many Arabic loanwords</p>
+        </div>
+      </div>
+      <div class="pronunciation">
+        <p><strong>Hello:</strong> "Hujambo" <em>[hoo-JAHM-bo]</em></p>
+        <p><strong>Thank you:</strong> "Asante" <em>[ah-SAHN-teh]</em></p>
+        <p><strong>How are you?:</strong> "Habari yako?" <em>[hah-BAH-ree YAH-ko]</em></p>
+      </div>
+      <a href="#/continent-africa" class="back-link">← Back to Africa</a>
     </section>
 
   </div>
@@ -99,12 +628,51 @@
 <!-- Reveal.js script to initialize slideshow functionality -->
 <script src="https://cdn.jsdelivr.net/npm/reveal.js/dist/reveal.min.js"></script>
 <script>
-  Reveal.initialize();
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    controls: false,
+    keyboard: true,
+    touch: true,
+    center: false,
+    scrollable: false
+  });
+  
+  // Make first slide clickable anywhere to advance
+  document.addEventListener('DOMContentLoaded', function() {
+    const firstSlide = document.querySelector('.reveal .slides section:first-child');
+    if (firstSlide) {
+      firstSlide.style.cursor = 'pointer';
+      firstSlide.addEventListener('click', function() {
+        Reveal.next();
+      });
+    }
+    
+    // Reset scroll position when navigating to ensure proper display
+    Reveal.addEventListener('slidechanged', function(event) {
+      // Reset any scroll position when changing slides
+      const currentSlide = event.currentSlide;
+      if (currentSlide) {
+        currentSlide.scrollTop = 0;
+      }
+      
+      // Reset main container scroll
+      const slides = document.querySelector('.reveal .slides');
+      if (slides) {
+        slides.scrollTop = 0;
+      }
+    });
+  });
 </script>
 
-<!-- Initialize Tippy.js tooltips on elements with data-tippy-content -->
+<!-- Initialize Tippy.js tooltips -->
 <script>
-  tippy('[data-tippy-content]');
+  tippy('[data-tippy-content]', {
+    theme: 'light',
+    arrow: true,
+    placement: 'top',
+    animation: 'scale'
+  });
 </script>
 </body>
 </html>
